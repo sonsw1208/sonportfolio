@@ -114,14 +114,10 @@ html.static-mode .reveal {
 }
 
 /* ============ PULSE RING (nút play showreel) ============ */
-/* Chuyển động lặp vô hạn nên phải tắt khi user yêu cầu giảm chuyển động, và khi chụp
-   ảnh tĩnh (?shot=1) để screenshot không bắt được khung hình ngẫu nhiên giữa chu kỳ. */
-@media (prefers-reduced-motion: reduce) {
-  .pulse-ring {
-    animation: none;
-    opacity: 0;
-  }
-}
+/* Đây là hiệu ứng trang trí báo hiệu "bấm được", không phải chuyển động nội dung khi
+   scroll/thao tác — giữ chạy kể cả khi bật prefers-reduced-motion (giống .marquee-track).
+   Chỉ tắt khi chụp ảnh tĩnh (?shot=1) để screenshot không bắt khung hình ngẫu nhiên giữa
+   chu kỳ animation. */
 html.static-mode .pulse-ring {
   animation: none;
   opacity: 0;
