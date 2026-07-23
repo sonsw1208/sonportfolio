@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { LangProvider } from "@/context/LangProvider";
 import { SoundProvider } from "@/context/SoundProvider";
+import { profile } from "@/data/profile";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -17,15 +18,32 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
+const SITE_URL = "https://www.lesonmedia.com";
+const SITE_DESCRIPTION =
+  "Son Media là video editor chuyên nghiệp: editing, showreel, cinematic, motion graphics.";
+
 export const metadata: Metadata = {
-  title: "Son Editor Portfolio",
-  description:
-    "Portfolio của một Video Editor chuyên nghiệp — editing, showreel, cinematic, motion graphics.",
+  metadataBase: new URL(SITE_URL),
+  title: profile.brand.name,
+  description: SITE_DESCRIPTION,
   // Favicon để ở public/ (không phải src/app/) — file icon trong app/ đi qua
   // next-metadata-route-loader, loader này nội suy đường dẫn tuyệt đối vào một chuỗi
   // single-quoted mà không escape, nên vỡ cú pháp khi thư mục cha có dấu nháy đơn
   // (VD "Note's Son"). Khai báo tay như dưới đây tránh hoàn toàn loader đó.
   icons: { icon: "/favicon.ico" },
+  openGraph: {
+    title: profile.brand.name,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    siteName: profile.brand.name,
+    locale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: profile.brand.name,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 const THEME_INIT = `
