@@ -1,21 +1,17 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { LangProvider } from "@/context/LangProvider";
 import { SoundProvider } from "@/context/SoundProvider";
 import { profile } from "@/data/profile";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700"],
-});
-
+// Toàn site dùng MỘT font duy nhất là Inter. Tiêu đề và nhãn không còn font riêng nữa,
+// chỉ khác nhau ở độ đậm/cỡ chữ — vì vậy phải nạp đủ tới weight 800 cho phần heading.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const SITE_URL = "https://www.lesonmedia.com";
@@ -67,7 +63,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}
+        className={`${inter.variable} font-sans antialiased`}
       >
         <ThemeProvider>
           <LangProvider>

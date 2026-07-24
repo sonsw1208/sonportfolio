@@ -39,7 +39,9 @@ const config: Config = {
         container: "var(--maxw)",
       },
       fontFamily: {
-        display: ["var(--font-space-grotesk)", "sans-serif"],
+        // Cả site dùng chung Inter. Giữ lại token `display` (thay vì xoá và sửa hơn 20 chỗ
+        // đang dùng class font-display) để sau này muốn đổi font tiêu đề chỉ cần sửa ở đây.
+        display: ["var(--font-inter)", "system-ui", "sans-serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       keyframes: {
