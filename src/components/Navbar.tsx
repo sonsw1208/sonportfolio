@@ -9,16 +9,17 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LangToggle } from "@/components/ui/LangToggle";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { cn } from "@/lib/cn";
+import { t } from "@/lib/uiStrings";
 
 const LINKS = [
-  { href: "#home", label: "HOME" },
-  { href: "#works", label: "WORKS" },
-  { href: "#about", label: "ABOUT" },
-  { href: "#contact", label: "CONTACT" },
+  { href: "#home", key: "navHome" as const },
+  { href: "#works", key: "navWorks" as const },
+  { href: "#about", key: "navAbout" as const },
+  { href: "#contact", key: "navContact" as const },
 ];
 
 export function Navbar() {
-  const { profile } = useLang();
+  const { profile, lang } = useLang();
   const { playClick } = useSound();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -82,7 +83,7 @@ export function Navbar() {
                 setOpen(false);
               }}
             >
-              {l.label}
+              {t(lang, l.key)}
             </a>
           ))}
         </nav>

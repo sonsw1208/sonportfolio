@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LayoutGrid, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import { useLang } from "@/context/LangProvider";
 import { useSound } from "@/hooks/useSound";
 import { Reveal, RevealStagger, RevealItem } from "@/components/ui/Reveal";
@@ -14,7 +14,9 @@ import type { WorkItem } from "@/data/types";
 export function Works() {
   const { works, lang } = useLang();
   const { playClick } = useSound();
-  const [filter, setFilter] = useState("all");
+  // Mặc định chọn pill ĐẦU TIÊN trong danh sách (hiện là "AI Video") thay vì "Tất cả" —
+  // tự bám theo thứ tự thật của works.filters nên đổi thứ tự pill qua admin vẫn đúng.
+  const [filter, setFilter] = useState(works.filters[0]?.key ?? "all");
   const [selected, setSelected] = useState<WorkItem | null>(null);
 
   const items = works.items.filter((w) => filter === "all" || w.cat === filter);
@@ -30,7 +32,7 @@ export function Works() {
         <div className="flex justify-between items-end gap-6 flex-wrap mb-11">
           <div>
             <Reveal>
-              <Eyebrow icon={LayoutGrid} className="text-g600">
+              <Eyebrow className="text-g600">
                 Portfolio
               </Eyebrow>
             </Reveal>

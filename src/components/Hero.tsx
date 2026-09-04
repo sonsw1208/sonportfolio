@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowDown, Clapperboard, Play } from "lucide-react";
+import { ArrowDown, Play } from "lucide-react";
 import { useLang } from "@/context/LangProvider";
 import { useSound } from "@/hooks/useSound";
 import { Reveal } from "@/components/ui/Reveal";
@@ -43,7 +43,7 @@ export function Hero() {
       <div className="w-full max-w-container mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1.05fr_.95fr] gap-11 lg:gap-14 items-center">
         <div>
           <Reveal>
-            <Eyebrow icon={Clapperboard} className="text-g600">
+            <Eyebrow className="text-g600">
               {hero.eyebrow}
             </Eyebrow>
           </Reveal>

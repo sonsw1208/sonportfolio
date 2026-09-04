@@ -5,6 +5,10 @@ export const UI_STRINGS = {
     sound: "Bật/tắt âm thanh",
     theme: "Giao diện sáng/tối",
     lang: "Chuyển sang tiếng Anh",
+    navHome: "TRANG CHỦ",
+    navWorks: "SẢN PHẨM",
+    navAbout: "GIỚI THIỆU",
+    navContact: "LIÊN HỆ",
   },
   en: {
     empty: "No projects in this category yet.",
@@ -12,6 +16,10 @@ export const UI_STRINGS = {
     sound: "Toggle sound",
     theme: "Light / Dark mode",
     lang: "Switch to Vietnamese",
+    navHome: "HOME",
+    navWorks: "WORKS",
+    navAbout: "ABOUT",
+    navContact: "CONTACT",
   },
 } as const;
 

@@ -441,23 +441,9 @@ function buildForm(){
     b.appendChild(field(data.about,'title','Tiêu đề',null,true));
     b.appendChild(field(data.about,'highlight','Cụm từ tô gradient','Video Editor'));
     b.appendChild(paraField(data.about,'bio','Tiểu sử (cách 1 dòng trống = đoạn mới)'));
-    const r=el('div','row2');
-    r.appendChild(field(data.about,'ringValue','Huy hiệu — số'));
-    r.appendChild(field(data.about,'ringLabel','Huy hiệu — nhãn'));
-    b.appendChild(r);
     b.appendChild(imageField(data.about,'photo','Ảnh về mình',1000,'Ảnh vuông (1:1) đẹp nhất.'));
     b.appendChild(field(data.about,'skillsTitle','Tiêu đề kỹ năng'));
     b.appendChild(linesField(data.about,'skills','Kỹ năng / phần mềm (mỗi dòng một mục)'));
-  }));
-
-  // ABOUT STAT CARDS
-  f.appendChild(sectionEl('Thẻ số liệu (About)',(b,s)=>{
-    repeater(b,data.about.statCards,s,(box,item)=>{
-      const r=el('div','row2');
-      r.appendChild(field(item,'value','Số'));
-      r.appendChild(field(item,'label','Nhãn'));
-      box.appendChild(r);
-    },()=>({value:'0+',label:'Nhãn mới'}),'Thẻ');
   }));
 
   // CONTACT

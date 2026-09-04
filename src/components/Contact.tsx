@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { useLang } from "@/context/LangProvider";
 import { useSound } from "@/hooks/useSound";
 import { Reveal } from "@/components/ui/Reveal";
@@ -31,7 +31,7 @@ export function Contact() {
             }}
           />
           <div className="relative">
-            <Eyebrow icon={MessageCircle} className="text-g300">
+            <Eyebrow className="text-g300">
               {contact.eyebrow}
             </Eyebrow>
             <h2 className="text-[clamp(2.1rem,4.6vw,3.4rem)] font-bold my-[18px] whitespace-pre-line">

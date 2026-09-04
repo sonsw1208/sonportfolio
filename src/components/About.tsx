@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { UserRound } from "lucide-react";
 import { useLang } from "@/context/LangProvider";
-import { Reveal, RevealStagger, RevealItem } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { Highlighted } from "@/components/ui/GradientText";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 
@@ -41,16 +40,12 @@ export function About() {
                 <path d="M22 200c0-46 34-74 78-74s78 28 78 74H22z" fill="rgba(255,255,255,.16)" />
               </svg>
             )}
-            <div className="absolute right-[18px] bottom-[18px] z-[2] rounded-sm bg-white/10 border border-white/25 backdrop-blur-md text-white px-[18px] py-3.5">
-              <b className="font-display text-2xl block leading-none">{about.ringValue}</b>
-              <span className="text-[0.72rem] opacity-85">{about.ringLabel}</span>
-            </div>
           </div>
         </Reveal>
 
         <div>
           <Reveal>
-            <Eyebrow icon={UserRound} className="text-g600">
+            <Eyebrow className="text-g600">
               {about.eyebrow}
             </Eyebrow>
           </Reveal>
@@ -83,19 +78,6 @@ export function About() {
               ))}
             </div>
           </Reveal>
-
-          <RevealStagger className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-[34px]">
-            {about.statCards.map((s, i) => (
-              <RevealItem key={i}>
-                <div className="bg-surface border border-border rounded-sm p-5 shadow-sm h-full">
-                  <b className="font-display text-[2rem] font-bold block">
-                    <em className="not-italic grad-text">{s.value}</em>
-                  </b>
-                  <span className="text-[0.8rem] text-text-soft">{s.label}</span>
-                </div>
-              </RevealItem>
-            ))}
-          </RevealStagger>
         </div>
       </div>
     </section>

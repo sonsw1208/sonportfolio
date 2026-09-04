@@ -48,22 +48,14 @@ export interface WorksSection {
   items: WorkItem[];
 }
 
-export interface StatCard {
-  value: string;
-  label: string;
-}
-
 export interface AboutSection {
   eyebrow: string;
   title: string;
   highlight: string;
   bio: string[];
   photo: string;
-  ringValue: string;
-  ringLabel: string;
   skillsTitle: string;
   skills: string[];
-  statCards: StatCard[];
 }
 
 // Không dùng union cố định: nội dung này đến từ content.json do admin chỉnh tự do,

@@ -135,12 +135,11 @@ export async function translateProfile(base: SiteProfile): Promise<SiteProfile> 
 
   void trArrayField(d.stats, "label", jobs);
 
-  (["eyebrow", "title", "highlight", "ringLabel", "skillsTitle"] as const).forEach((k) =>
+  (["eyebrow", "title", "highlight", "skillsTitle"] as const).forEach((k) =>
     void trField(d.about, k, jobs)
   );
   void trStringArray(d.about.bio, jobs);
   void trStringArray(d.about.skills, jobs);
-  void trArrayField(d.about.statCards, "label", jobs);
 
   (["eyebrow", "heading", "text"] as const).forEach((k) => void trField(d.contact, k, jobs));
 
