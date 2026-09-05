@@ -109,7 +109,7 @@ https://drive.google.com/file/d/<FILE_ID>/preview
 - File Drive phải đặt quyền chia sẻ **"Anyone with the link"** thì mới nhúng được.
 - Data video khai báo tập trung ở `src/data/works.ts` (interface `WorkItem` trong `src/data/types.ts`): mỗi item gồm `id`, `title`, `cat` (key lọc), `catLabel` (nhãn hiển thị), `dur`, `role`, `desc`, `driveFileId`, `thumb` (ảnh thật, ưu tiên nếu có), `hue` (gradient CSS dùng làm placeholder khi chưa có `thumb`).
 - Component `<VideoEmbed>` nhận `driveFileId`, render iframe trong modal/lightbox với tỉ lệ 16:9 (`aspect-video`), lazy load — chỉ tải iframe khi user bấm play để trang nhẹ.
-- Thumbnail: field `thumb`. **Thực tế hiện tại `thumb` đều rỗng** → mọi card dùng gradient `hue` làm placeholder (xem `Works.tsx`, render qua `background-image` inline chứ không qua `next/image`). Drive không cho lấy thumbnail chất lượng cao ổn định, nên khi có ảnh thật thì nạp qua admin (thành data URI, xem §12) hoặc đặt file vào `public/` rồi trỏ đường dẫn.
+- Thumbnail: field `thumb` — đường dẫn tới file trong `public/uploads/` (nạp qua admin, xem §12); để trống thì card dùng gradient `hue` làm placeholder. `Works.tsx` render thumbnail qua `background-image` inline chứ không qua `next/image`. Drive không cho lấy thumbnail chất lượng cao ổn định nên phải tự nạp ảnh.
 - Lưu ý giới hạn: Google Drive embed không hỗ trợ autoplay/điều khiển chất lượng tốt và có thể bị giới hạn lượt xem cao — chấp nhận đánh đổi này theo lựa chọn của user.
 
 ---
@@ -124,6 +124,7 @@ src/
     globals.css          # CSS variables light/dark, @tailwind directives, keyframes marquee, reduced-motion
     api/
       content/route.ts    # GET/POST src/data/content.json — hậu trường cho public/admin.html (chỉ ghi được khi dev)
+      upload/route.ts      # nhận ảnh từ admin, ghi file vào public/uploads/, trả về đường dẫn (chỉ dev)
   components/
     ui/                  # Button, Pill, Logo, GradientText (Highlighted), Reveal/RevealStagger/RevealItem,
                           # Marquee, ThemeToggle, LangToggle, SoundToggle, SocialIcon
@@ -142,7 +143,7 @@ src/
     cn.ts                        # helper classnames (clsx + tailwind-merge)
 public/
   admin.html                    # trang quản trị nội dung — xem mục 10
-  thumbnails/                    # ảnh thumbnail video (chưa dùng, còn placeholder gradient `hue`)
+  uploads/                       # ảnh thật do admin tải lên (logo, chân dung, thumbnail...) — PHẢI commit kèm
 tailwind.config.ts
 ```
 
@@ -208,6 +209,7 @@ Những quy tắc dưới đây phải được tuân thủ trong mọi thay đ�
 
 - **`public/admin.html`** — trang quản trị, Next.js tự serve tại `http://localhost:3000/admin.html` khi chạy `npm run dev` (không cần `node server.js`/port 5500 nữa). Form giống bản cũ (repeater, image field tự nén qua canvas...), nhưng khi sửa field (`apply()`), sau debounce ~500ms sẽ **POST thẳng vào `/api/content`**, route này ghi đè `src/data/content.json` trên đĩa. Khung preview bên phải trỏ thẳng vào trang chủ thật (`/`, không phải bản clone tĩnh) nên luôn khớp 100% với những gì sẽ hiển thị.
 - **`src/app/api/content/route.ts`** — `GET` đọc, `POST` ghi `src/data/content.json`. **POST bị chặn khi `NODE_ENV=production`** (trả 403) vì filesystem trên môi trường serverless (Vercel) chỉ đọc — tính năng sửa-trực-tiếp này CHỈ chạy khi `npm run dev` cục bộ. Sửa nội dung xong thì commit + deploy lại như bình thường.
+- **`src/app/api/upload/route.ts`** — nhận data URI ảnh từ admin, ghi thành file trong `public/uploads/` (tên = hash nội dung) và trả về đường dẫn. Cũng chỉ chạy được ở dev, và `src/middleware.ts` trả 404 cho cả `/admin.html`, `/api/content`, `/api/upload` khi production. Xem §12 để biết vì sao KHÔNG lưu ảnh base64 trong `content.json` nữa.
 - **Vì sao "tự động lên trang chủ"**: `profile.ts`/`works.ts` `import` tĩnh từ `content.json`, nên khi file này đổi trên đĩa, Next dev server (Fast Refresh/webpack watcher) tự biên dịch lại và đẩy cập nhật tới **mọi tab đang mở** trỏ vào cùng `npm run dev` (kể cả tab trang chủ đang mở riêng, không chỉ iframe trong admin) — không cần bước merge thủ công nào nữa. Đã kiểm chứng: sửa field ở `/admin.html` → `content.json` đổi ngay → tab trang chủ riêng biệt tự cập nhật sau khi Next hot-reload xong (thường dưới 1–2 giây; nếu chưa thấy, F5 lại tab đó).
 - Nút **"Tải backup JSON"** trong admin chỉ còn là bản sao lưu thủ công (không phải cơ chế lưu chính), và **"Nhập file"** để phục hồi từ backup đó.
 - **Đã lỗi thời, không dùng nữa**: `index.html`, `admin.html` (bản ở root, khác với `public/admin.html`), `site-data.js`, `server.js` ở root repo — đây là bản static gốc trước khi port, giữ lại chỉ để tham khảo lịch sử. KHÔNG sửa các file này để cập nhật nội dung site thật; chúng không còn liên kết gì với `src/`.
@@ -238,7 +240,11 @@ Những điều dưới đây chỉ lộ ra khi đọc nhiều file cùng lúc �
 
 **Auto-translate chỉ chạm chuỗi có dấu tiếng Việt**: `trSeg()` bỏ qua mọi đoạn không khớp regex `viMarks`. Vì vậy `"Premiere Pro"`, `"Motion"`, tên riêng, tên danh mục thuần ASCII sẽ **giữ nguyên ở cả 2 ngôn ngữ** — đó là hành vi cố ý, không phải bug. Chuỗi giao diện cố định (không đến từ `content.json`) thì không dịch runtime mà tra bảng `src/lib/uiStrings.ts` qua `t(lang, key)`.
 
-**Ảnh trong `content.json` là data URI base64 inline**, không phải file trong `public/`: `brand.logoImage`, `hero.portraitImage`, `about.photo` hiện mỗi cái ~90–160 KB chuỗi base64 (admin nén bằng canvas trước khi nhúng). Hệ quả cần nhớ: (a) `content.json` rất lớn — đừng in cả file ra, đọc bằng script trích field; (b) `next/image` nhận data URI không qua optimizer, nên đừng thêm `remotePatterns`/domain vào `next.config.ts` cho mấy ảnh này; (c) diff của một lần đổi ảnh sẽ khổng lồ, là bình thường.
+**Ảnh là FILE THẬT trong `public/uploads/`, `content.json` chỉ giữ đường dẫn** (VD `"/uploads/06ec46fba0b3cb7b.png"`). Admin nén ảnh bằng canvas rồi POST data URI lên `/api/upload`; route đó ghi file, đặt tên theo **hash nội dung** (tải lại đúng ảnh cũ thì trùng file, không sinh rác) và trả về đường dẫn để lưu vào `content.json`.
+
+> Trước đây ảnh nằm inline dạng base64 ngay trong `content.json`. Vì `profile.ts`/`works.ts` import tĩnh file này, toàn bộ base64 bị đóng gói vào **bundle JS phía client** — First Load JS đã phình tới **6.23 MB** trước khi chuyển sang file thật (còn **173 KB**). Đừng quay lại kiểu nhúng base64.
+
+Hệ quả cần nhớ: (a) ảnh mới phải được commit kèm (`public/uploads/` KHÔNG nằm trong `.gitignore` — Vercel build từ repo nên thiếu file là ảnh hỏng trên bản deploy); (b) thay ảnh không tự xoá file cũ, thỉnh thoảng dọn tay nếu muốn; (c) `imageField` trong admin có fallback: upload lỗi thì vẫn nhúng base64 như cũ để không mất ảnh vừa chọn, nên nếu thấy chuỗi base64 xuất hiện lại trong `content.json` thì đó là dấu hiệu `/api/upload` hỏng.
 
 **Reveal có 3 chế độ, đừng thay bằng `useReducedMotion()` của framer**: `src/components/ui/Reveal.tsx` cố ý render lần đầu trên client GIỐNG HỆT SSR (`disabled=false`) rồi mới đồng bộ `matchMedia` trong `useLayoutEffect` — dùng `useReducedMotion()` sẽ đọc matchMedia ngay lúc render đầu và gây lệch hydration. Chế độ thứ ba là `?shot=1` → script trong `layout.tsx` gắn class `static-mode` lên `<html>` → tắt reveal để chụp screenshot tĩnh (mục 10).
 

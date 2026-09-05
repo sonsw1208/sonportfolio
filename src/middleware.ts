@@ -22,5 +22,5 @@ export function middleware() {
 }
 
 export const config = {
-  matcher: ["/admin.html", "/api/content"],
+  matcher: ["/admin.html", "/api/content", "/api/upload"],
 };

@@ -182,10 +182,34 @@ function imageField(obj,key,labelText,maxDim,hint){
   const file=document.createElement('input');file.type='file';file.accept='image/*';file.hidden=true;
   pick.onclick=()=>file.click();
   clr.onclick=()=>{obj[key]='';setPrev();apply();};
-  file.onchange=()=>{const f=file.files[0];if(!f)return;resizeImage(f,maxDim,url=>{obj[key]=url;setPrev();apply();});};
+  file.onchange=()=>{
+    const f=file.files[0];if(!f)return;
+    // Nén bằng canvas như cũ, nhưng KHÔNG lưu chuỗi base64 vào nội dung nữa: đẩy lên
+    // /api/upload để ghi thành file thật, chỉ giữ lại đường dẫn ngắn.
+    resizeImage(f,maxDim,dataUrl=>{
+      prev.innerHTML='<span style="font-size:.6rem">Đang tải…</span>';
+      uploadImage(dataUrl).then(url=>{
+        obj[key]=url;setPrev();apply();
+      }).catch(err=>{
+        // Tải lên hỏng thì vẫn giữ được ảnh (nhúng base64 như cách cũ) để không mất công chọn lại.
+        obj[key]=dataUrl;setPrev();apply();
+        toast('Không tải được ảnh lên ('+err.message+') — tạm nhúng thẳng vào nội dung');
+      });
+    });
+  };
   btns.appendChild(pick);btns.appendChild(clr);
   wrap.appendChild(prev);wrap.appendChild(btns);wrap.appendChild(file);
   l.appendChild(wrap);if(hint)l.appendChild(el('div','hint',hint));return l;
+}
+async function uploadImage(dataUrl){
+  const res=await fetch('/api/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dataUrl})});
+  if(!res.ok){
+    const j=await res.json().catch(()=>({}));
+    throw new Error(j.error||('HTTP '+res.status));
+  }
+  const j=await res.json();
+  if(!j.url)throw new Error('thiếu url trả về');
+  return j.url;
 }
 function resizeImage(file,maxDim,cb){
   const r=new FileReader();
