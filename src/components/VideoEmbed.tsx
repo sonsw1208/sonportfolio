@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useLang } from "@/context/LangProvider";
@@ -15,7 +15,10 @@ export interface VideoEmbedItem {
   driveFileId: string;
   catLabel?: string;
   role?: string;
+  thumb?: string;
 }
+
+const DEFAULT_RATIO = 16 / 9;
 
 export function VideoEmbed({ work, onClose }: { work: VideoEmbedItem | null; onClose: () => void }) {
   const { lang } = useLang();
@@ -23,6 +26,29 @@ export function VideoEmbed({ work, onClose }: { work: VideoEmbedItem | null; onC
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<Element | null>(null);
   const open = work !== null;
+
+  // Khung video khớp đúng tỉ lệ video thật, đoán từ ảnh thumbnail (thumbnail vốn là ảnh
+  // chụp từ chính video nên cùng tỉ lệ). Khung khớp thì bộ điều khiển của Google Drive
+  // nằm gọn ở mép dưới video, thay vì trôi ra giữa khung và đè lên nội dung — nhất là
+  // với video dọc. Không có thumbnail thì dùng 16:9.
+  const [ratio, setRatio] = useState(DEFAULT_RATIO);
+  const thumb = work?.thumb;
+
+  useEffect(() => {
+    setRatio(DEFAULT_RATIO);
+    if (!thumb) return;
+    let alive = true;
+    const img = new window.Image();
+    img.onload = () => {
+      if (alive && img.naturalWidth > 0 && img.naturalHeight > 0) {
+        setRatio(img.naturalWidth / img.naturalHeight);
+      }
+    };
+    img.src = thumb;
+    return () => {
+      alive = false;
+    };
+  }, [thumb]);
 
   useEffect(() => {
     if (!open) return;
@@ -70,8 +96,14 @@ export function VideoEmbed({ work, onClose }: { work: VideoEmbedItem | null; onC
               trình duyệt (đặc biệt mobile) tách nó thành lớp vẽ riêng và hiện mảng tối đè lên
               video — cùng loại lỗi đã ghi ở nút đóng bên dưới, nhưng ở tầm rộng hơn (che cả
               video, không chỉ một góc). */}
+          {/* Bề rộng khung tính từ chiều cao còn trống nhân với tỉ lệ video (--ratio), nên
+              khung luôn vừa khít video dù dọc hay ngang. Phần trừ đi là dải tiêu đề bên dưới
+              (mobile) và thêm padding của lớp phủ (desktop). */}
           <motion.div
-            className="m-auto w-full h-dvh sm:h-auto sm:max-w-[min(960px,calc((100vh-120px)*16/9))] relative flex flex-col"
+            style={{ "--ratio": String(ratio) } as React.CSSProperties}
+            className="m-auto w-full relative flex flex-col
+                       max-w-[min(100%,calc((100dvh-72px)*var(--ratio)))]
+                       sm:max-w-[min(960px,calc((100vh-120px)*var(--ratio)))]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -93,8 +125,8 @@ export function VideoEmbed({ work, onClose }: { work: VideoEmbedItem | null; onC
               <X size={24} strokeWidth={2.4} />
             </button>
 
-            <div className="flex flex-col flex-1 min-h-0 sm:flex-none sm:rounded-md sm:overflow-hidden sm:shadow-lg">
-              <div className="flex-1 min-h-0 sm:flex-none sm:aspect-video w-full">
+            <div className="flex flex-col sm:rounded-md sm:overflow-hidden sm:shadow-lg">
+              <div className="w-full aspect-[var(--ratio)]">
                 {work.driveFileId ? (
                   <iframe
                     src={buildDriveEmbedUrl(work.driveFileId)}
