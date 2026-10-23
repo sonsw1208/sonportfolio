@@ -18,10 +18,6 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
-      // Công cụ tĩnh độc lập ngoài app Next.js (xem CLAUDE.md mục 10) — không lint theo rule TS/React.
-      "server.js",
-      "site-data.js",
-      "admin.html",
     ],
   },
 ];
