@@ -14,9 +14,9 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(--bg);height:100vh;overflow:hidden}
-.app{display:grid;grid-template-columns:minmax(400px,480px) 1fr;height:100vh}
+.app{max-width:1500px;margin:auto;height:100vh}
 /* ===== EDITOR ===== */
-.editor{display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--panel);height:100vh}
+.editor{display:flex;flex-direction:column;background:var(--panel);height:100vh}
 .topbar{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel);position:sticky;top:0;z-index:5}
 .topbar .brand{font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:9px;margin-right:auto}
 .topbar .brand .m{width:28px;height:28px;border-radius:8px;background:var(--grad);display:grid;place-items:center}
@@ -65,25 +65,36 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
 .imgprev{width:70px;height:70px;border-radius:10px;border:1.5px solid var(--border);background:#eef4f0 center/cover no-repeat;flex:none;display:grid;place-items:center;color:var(--soft);font-size:.66rem;text-align:center;overflow:hidden}
 .imgprev img{width:100%;height:100%;object-fit:cover}
 .imgbtns{display:flex;flex-direction:column;gap:6px}
-/* ===== PREVIEW ===== */
-.preview{position:relative;background:#dfeae4;display:flex;flex-direction:column}
-.preview .pbar{padding:10px 16px;display:flex;align-items:center;gap:10px;background:var(--panel);border-bottom:1px solid var(--border)}
-.preview .pbar .dev{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:9px}
-.preview .pbar .dev button{border:none;background:none;padding:6px 12px;border-radius:6px;font-family:'Space Grotesk';font-weight:600;font-size:.78rem;color:var(--soft);cursor:pointer}
-.preview .pbar .dev button.active{background:#fff;color:var(--g700);box-shadow:var(--shadow)}
-.preview .pbar a{margin-left:auto;font-size:.8rem;color:var(--g700);font-weight:600;font-family:'Space Grotesk'}
-.frame-wrap{flex:1;overflow:auto;display:flex;justify-content:center;padding:18px;background:repeating-linear-gradient(45deg,#e6efe9,#e6efe9 10px,#e1ebe5 10px,#e1ebe5 20px)}
-#preview{background:#fff;border:none;box-shadow:0 10px 40px rgba(6,78,59,.15);border-radius:8px;width:100%;height:100%;transition:width .25s}
-#preview.mobile{width:390px;max-width:390px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 20px;border-radius:10px;font-size:.85rem;font-weight:500;opacity:0;transition:.3s;z-index:50;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .loading{padding:40px 20px;text-align:center;color:var(--soft);font-size:.9rem}
-@media(max-width:900px){
-  .app{grid-template-columns:1fr;grid-template-rows:1fr}
-  .preview{display:none}
-  .app.showpreview .editor{display:none}
-  .app.showpreview .preview{display:flex}
-}
+.video-tabs,.video-toolbar,.video-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.video-tabs{margin:16px 0 12px}
+.video-tabs .active{background:var(--g700);color:#fff;border-color:var(--g700)}
+.video-toolbar{justify-content:space-between;margin-bottom:12px}
+.video-toolbar p{font-size:.8rem;color:var(--soft)}
+.video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.video-card{min-width:0;border:1px solid var(--border);border-radius:12px;background:var(--panel);position:relative}
+.video-thumb{aspect-ratio:16/10;position:relative;border-radius:11px 11px 0 0;overflow:hidden;background:var(--g700)}
+.video-thumb img{width:100%;height:100%;object-fit:cover}
+.video-badge,.video-duration{position:absolute;bottom:9px;padding:4px 8px;border-radius:6px;font-size:.7rem;background:#fff;color:var(--g700)}
+.video-badge{left:9px}.video-duration{right:9px;background:var(--text);color:#fff}
+.video-handle{position:absolute;top:9px;right:9px;width:40px;height:40px;justify-content:center;cursor:grab;font-size:20px;touch-action:pan-y}
+.video-info{padding:12px}.video-info h3{font-size:.9rem;overflow-wrap:anywhere;margin-bottom:10px}
+.video-actions{gap:6px}.video-actions .btn{min-height:36px;justify-content:center}.video-actions .edit-video{flex:1}
+.video-moves{display:flex;gap:5px;margin-top:8px}.video-moves .btn{flex:1;justify-content:center;min-height:36px}
+.btn:disabled{opacity:.4;cursor:default}.btn:focus-visible{outline:3px solid var(--g500);outline-offset:3px}
+.video-card.dragging{opacity:.4}.video-card.drop-before::before,.video-card.drop-after::after{content:'';position:absolute;top:0;bottom:0;width:4px;background:var(--g500);border-radius:4px}
+.video-card.drop-before::before{left:-9px}.video-card.drop-after::after{right:-9px}
+.video-empty{grid-column:1/-1;padding:30px 12px;text-align:center;color:var(--soft);border:1px dashed var(--border);border-radius:12px}
+.video-dialog{margin:auto;width:min(600px,calc(100% - 24px));max-height:90dvh;border:1px solid var(--border);border-radius:16px;padding:0;color:var(--text);background:var(--panel);box-shadow:var(--shadow)}
+.video-dialog::backdrop{background:rgba(11,31,22,.55)}
+.video-dialog-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--panel);z-index:1}
+.video-dialog-head h2{font-size:1.05rem}.video-dialog-body{padding:4px 20px 24px}.video-settings{margin:18px 0}
+.video-delete-confirm{padding:12px;background:var(--bg);border-radius:9px;font-size:.8rem;margin-top:10px}.video-delete-confirm .video-actions{margin-top:10px}
+@media(min-width:1200px){.video-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.video-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.form{padding:8px 10px 40px}.body{padding:4px 10px 14px}.video-grid{gap:10px}.video-info{padding:9px}.video-tabs .btn{min-height:40px}.video-moves .btn{padding:6px;font-size:.7rem}.video-actions .btn{padding:6px}.topbar{padding:12px}.video-badge{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -93,6 +104,7 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
     <div class="topbar">
       <div class="brand"><span class="m"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z" fill="#fff"/></svg></span>Admin</div>
       <span id="saveStat" style="font-family:'Space Grotesk';font-weight:600;font-size:.74rem;color:var(--soft);display:inline-flex;align-items:center;gap:6px">● Đang tải...</span>
+      <a class="btn sm" href="/" target="_blank" rel="noopener" style="text-decoration:none">Mở trang chủ ↗</a>
       <button class="btn sm" id="btnImport">Nhập file</button>
       <button class="btn sm" id="btnUndo">Hoàn tác chưa lưu</button>
       <button class="btn primary sm" id="btnDownload">⤓ Tải backup JSON</button>
@@ -100,29 +112,19 @@ textarea{resize:vertical;min-height:64px;line-height:1.5}
     </div>
     <div class="form" id="form"><div class="loading">Đang tải nội dung từ trang chủ...</div></div>
   </div>
-  <!-- PREVIEW -->
-  <div class="preview">
-    <div class="pbar">
-      <div class="dev">
-        <button data-dev="desktop" class="active">🖥 Desktop</button>
-        <button data-dev="mobile">📱 Mobile</button>
-      </div>
-      <a href="/" target="_blank" rel="noopener">Mở trang chủ ↗</a>
-    </div>
-    <div class="frame-wrap"><iframe id="preview" src="/"></iframe></div>
-  </div>
 </div>
 <div class="toast" id="toast"></div>
 
+<script src="/admin-videos.js"></script>
 <script>
 const API = '/api/content';
 let data = null;
 const $=s=>document.querySelector(s);
-const iframe=$('#preview');
+
 
 /* ---- live apply + LƯU TRỰC TIẾP VÀO src/data/content.json qua API ---- */
 const saveStat=$('#saveStat');
-let applyTimer,reloadTimer,statT;
+let applyTimer,statT;
 function setStat(txt,color){if(!saveStat)return;saveStat.textContent=txt;saveStat.style.color=color||'var(--soft)';}
 async function saveToServer(){
   try{
@@ -134,10 +136,6 @@ async function saveToServer(){
     }
     setStat('✓ Đã lưu vào code','var(--g600)');
     clearTimeout(statT);statT=setTimeout(()=>setStat('● Tự động lưu khi sửa'),1400);
-    // trang chủ (Next.js dev) tự hot-reload khi content.json đổi; refresh khung xem trước
-    // sau một nhịp ngắn để chắc chắn thấy bản mới nhất.
-    clearTimeout(reloadTimer);
-    reloadTimer=setTimeout(()=>{try{iframe.contentWindow.location.reload();}catch(e){}},700);
   }catch(e){
     setStat('⚠ Mất kết nối server','#c0392b');
   }
@@ -409,55 +407,7 @@ function buildForm(){
   }));
 
   // WORKS
-  f.appendChild(sectionEl('Sản phẩm (Video)',(b,s)=>{
-    b.appendChild(field(data.works,'title','Tiêu đề mục'));
-    b.appendChild(field(data.works,'subtitle','Mô tả mục',null,true));
-    b.appendChild(el('div','hint','── Bộ lọc thể loại (kéo ⠿ để đổi thứ tự) ──'));
-    const filtWrap=el('div');b.appendChild(filtWrap);
-    b.appendChild(el('div','hint','── Danh sách video (kéo ⠿ để đổi thứ tự) ──'));
-    const itemsWrap=el('div');b.appendChild(itemsWrap);
-
-    // vẽ danh sách video trước để lấy hàm drawItems (bộ lọc sẽ gọi lại khi thay đổi)
-    const drawItems=repeater(itemsWrap,data.works.items,s,(box,item)=>{
-      // đồng bộ tên thể loại theo bộ lọc hiện tại
-      const flc=(data.works.filters||[]).find(x=>x.key===item.cat);
-      if(flc)item.catLabel=flc.label;
-      box.appendChild(field(item,'title','Tên video'));
-      const r=el('div','row2');
-      // dropdown thể loại — dựng lại theo bộ lọc hiện tại mỗi lần vẽ
-      const l=el('label','fld');l.appendChild(el('span',null,'Thể loại'));
-      const sel=el('select');
-      const cats=(data.works.filters||[]).filter(x=>x.key!=='all');
-      let matched=false;
-      cats.forEach(fl=>{const o=el('option',null,fl.label);o.value=fl.key;if(item.cat===fl.key){o.selected=true;matched=true;}sel.appendChild(o);});
-      if(!matched){const o=el('option',null,'⚠ '+(item.catLabel||item.cat||'chưa đặt')+' (chọn lại)');o.value=item.cat||'';o.selected=true;sel.appendChild(o);}
-      sel.onchange=()=>{item.cat=sel.value;const fl=data.works.filters.find(x=>x.key===sel.value);item.catLabel=fl?fl.label:sel.value;apply();drawItems();};
-      l.appendChild(sel);r.appendChild(l);
-      r.appendChild(field(item,'dur','Thời lượng (2:14)'));
-      box.appendChild(r);
-      box.appendChild(field(item,'role','Vai trò (vd: Edit, Color)'));
-      box.appendChild(field(item,'desc','Mô tả ngắn',null,true));
-      // link Google Drive
-      const dl=el('label','fld');dl.appendChild(el('span',null,'Link Google Drive'));
-      const di=el('input','inp');di.type='text';di.value=item.driveFileId?('https://drive.google.com/file/d/'+item.driveFileId+'/view'):'';
-      di.placeholder='Dán link chia sẻ Google Drive...';
-      const dhint=el('div','hint');
-      const setDHint=()=>dhint.textContent='File Drive phải để "Anyone with the link". ID: '+(item.driveFileId||'(chưa có)');
-      setDHint();
-      di.oninput=()=>{item.driveFileId=parseDriveId(di.value);setDHint();apply();};
-      dl.appendChild(di);dl.appendChild(dhint);
-      box.appendChild(dl);
-      box.appendChild(imageField(item,'thumb','Ảnh thumbnail',900,'Để trống sẽ dùng nền gradient.'));
-    },()=>{const fl=(data.works.filters||[]).filter(x=>x.key!=='all')[0]||{key:'',label:''};return{id:Date.now(),title:'Video mới',cat:fl.key,catLabel:fl.label,dur:'0:30',role:'Edit',desc:'',driveFileId:'',thumb:'',hue:'linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)'};},'Video',null,true);
-
-    // bộ lọc — khi sửa/thêm/xóa thì vẽ lại danh sách video để dropdown cập nhật
-    repeater(filtWrap,data.works.filters,null,(box,item)=>{
-      const r=el('div','row2');
-      r.appendChild(fieldCb(item,'key','Mã (vd: cinematic)',null,drawItems));
-      r.appendChild(fieldCb(item,'label','Tên hiển thị',null,drawItems));
-      box.appendChild(r);
-    },()=>({key:'new',label:'Thể loại mới'}),'Bộ lọc',drawItems,true);
-  }));
+  f.appendChild(sectionEl('Sản phẩm (Video)',buildVideoManager,true));
 
   // ABOUT
   f.appendChild(sectionEl('Giới thiệu (About)',(b)=>{
@@ -530,13 +480,6 @@ $('#fileImport').onchange=e=>{
   };
   r.readAsText(file);e.target.value='';
 };
-
-/* ---- device toggle ---- */
-document.querySelectorAll('.dev button').forEach(btn=>btn.onclick=()=>{
-  document.querySelectorAll('.dev button').forEach(x=>x.classList.remove('active'));
-  btn.classList.add('active');
-  iframe.classList.toggle('mobile',btn.dataset.dev==='mobile');
-});
 
 /* Backup JSON cũ (tạo trước khi thêm field mới) sẽ thiếu key → POST lên sẽ làm
    src/data/types.ts không khớp và vỡ `npm run build`. Điền giá trị mặc định ở đây. */

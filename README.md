@@ -20,16 +20,30 @@ Admin tự lưu sau khoảng 500 ms qua `/api/content`, cập nhật trực ti�
 `src/data/content.json`. Ảnh tải lên được lưu trong `public/uploads/` qua
 `/api/upload`. Trang chủ tự cập nhật qua Fast Refresh.
 
+Admin dùng toàn bộ chiều rộng, không nhúng preview trang chủ. Trong **Sản phẩm
+(Video)**, chọn thể loại rồi kéo tay cầm **⠿** trên thumbnail hoặc dùng các nút
+**Đầu / Trước / Sau**. Sắp xếp trong một thể loại giữ nguyên các vị trí của video
+thuộc thể loại khác. **Hoàn tác sắp xếp** khôi phục các lần sắp xếp trong phiên
+hiện tại (tối đa 30 lần, kể cả khi đã tự lưu); tải lại trang sẽ xóa lịch sử này.
+Bấm **Chỉnh sửa** để mở form chi tiết video. Nút **Mở trang chủ** mở tab riêng.
+
+Video chưa có thumbnail sẽ tự lấy ảnh do Google Drive tạo sẵn khi mở admin.
+Ảnh được lưu vào `public/uploads/` qua `/api/thumbnail`, rồi admin tự lưu đường
+dẫn vào nội dung. Ảnh đã chọn thủ công được giữ nguyên. Nếu Drive chưa xử lý xong
+hoặc video chưa công khai, mở **Chỉnh sửa → Tự lấy ảnh từ video** để thử lại.
+Khi dán link mới, rời ô nhập cũng sẽ lấy ảnh nếu video chưa có thumbnail.
+
 ## Cấu trúc
 
 - `src/app/page.tsx`: ghép Navbar, Hero, Works, About, Contact và Footer.
-- `src/data/content.json`: toàn bộ nội dung trang, hiện có 17 tác phẩm.
+- `src/data/content.json`: toàn bộ nội dung trang.
 - `src/data/types.ts`: kiểu dữ liệu của nội dung.
 - `src/components/`: giao diện, bộ lọc tác phẩm và modal video Google Drive.
 - `src/context/`: chế độ sáng/tối, ngôn ngữ VI/EN và âm thanh tương tác.
 - `src/lib/translate.ts`: dịch VI → EN bằng MyMemory, cache ở localStorage.
 - `src/app/globals.css`: design tokens cho hai chế độ màu.
 - `public/admin.html`: giao diện quản trị đang sử dụng.
+- `public/admin-videos.js`: lưới video, bộ lọc, sắp xếp và form chỉnh sửa.
 - `public/uploads/`: ảnh đang được nội dung trang tham chiếu; cần giữ khi deploy.
 
 ## Kiểm tra và build

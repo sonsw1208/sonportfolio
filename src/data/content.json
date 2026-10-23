@@ -30,12 +30,12 @@
     "subtitle": "Một vài dự án mình tâm đắc.\nBạn hãy dành chút thời gian xem thử nhé!",
     "filters": [
       {
-        "key": "AI Video",
-        "label": "AI Video"
-      },
-      {
         "key": "Talking Head",
         "label": "Talking Head"
+      },
+      {
+        "key": "AI Video",
+        "label": "AI Video"
       },
       {
         "key": "Short Video",
@@ -43,7 +43,11 @@
       },
       {
         "key": "Ads",
-        "label": "Ads"
+        "label": "Ads Video"
+      },
+      {
+        "key": "vlog",
+        "label": "Vlog"
       },
       {
         "key": "all",
@@ -160,18 +164,6 @@
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       },
       {
-        "id": 1788596864571,
-        "title": "Nhật Hoa",
-        "cat": "Talking Head",
-        "catLabel": "Talking Head",
-        "dur": "1:23",
-        "role": "Editing",
-        "desc": "",
-        "driveFileId": "1EgcfMfVqI7yvorPY3B08zWO6Qa8FuC6L",
-        "thumb": "/uploads/42d863651a57721b.png",
-        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
-      },
-      {
         "id": 1788597179985,
         "title": "Forex",
         "cat": "Talking Head",
@@ -184,15 +176,27 @@
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       },
       {
-        "id": 1788597796829,
-        "title": "MooGoo Ads",
-        "cat": "Ads",
-        "catLabel": "Ads",
-        "dur": "0:51",
+        "id": 1788596864571,
+        "title": "Nhật Hoa",
+        "cat": "Talking Head",
+        "catLabel": "Talking Head",
+        "dur": "1:23",
         "role": "Editing",
         "desc": "",
-        "driveFileId": "1FawE8bTizZqpxVFx5ftvrAvk8ElAMemM",
-        "thumb": "/uploads/6573deba050a9759.png",
+        "driveFileId": "1EgcfMfVqI7yvorPY3B08zWO6Qa8FuC6L",
+        "thumb": "/uploads/42d863651a57721b.png",
+        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
+      },
+      {
+        "id": 1792731447757,
+        "title": "Lâm Châu ",
+        "cat": "Ads",
+        "catLabel": "Ads Video",
+        "dur": "0:34",
+        "role": "Edit",
+        "desc": "",
+        "driveFileId": "1-MY3CmiJwwgZV8P0G0TcOTWAhU1WapWJ",
+        "thumb": "/uploads/43e3027acdeff192.jpg",
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       },
       {
@@ -208,27 +212,27 @@
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       },
       {
-        "id": 1788598392147,
-        "title": "MooGoo 2",
-        "cat": "Ads",
-        "catLabel": "Ads",
-        "dur": "0:43",
-        "role": "Editing",
-        "desc": "",
-        "driveFileId": "1VBdMF5QLOQgbWxxTdczCk49DWy86oXd7",
-        "thumb": "/uploads/2c63d865071e225e.png",
-        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
-      },
-      {
         "id": 1788598681787,
         "title": "MooGoo 3",
         "cat": "Ads",
-        "catLabel": "Ads",
+        "catLabel": "Ads Video",
         "dur": "0:41",
         "role": "Editing",
         "desc": "",
         "driveFileId": "12kFzBAXIEKxJjSP_G70MyPv47n2mHjtx",
         "thumb": "/uploads/132f53041eea0898.png",
+        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
+      },
+      {
+        "id": 1788597796829,
+        "title": "MooGoo Ads",
+        "cat": "Ads",
+        "catLabel": "Ads Video",
+        "dur": "0:51",
+        "role": "Editing",
+        "desc": "",
+        "driveFileId": "1FawE8bTizZqpxVFx5ftvrAvk8ElAMemM",
+        "thumb": "/uploads/6573deba050a9759.png",
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       },
       {
@@ -254,6 +258,30 @@
         "driveFileId": "1vCX_LcCslKJjJHmWBnlRU2WCdYLHTTWL",
         "thumb": "/uploads/7748dae62e694be7.png",
         "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
+      },
+      {
+        "id": 1792731306368,
+        "title": "Lâm Châu",
+        "cat": "vlog",
+        "catLabel": "Vlog",
+        "dur": "1:08",
+        "role": "Edit",
+        "desc": "",
+        "driveFileId": "1kcEi-lIhzzXm93DV2WlgSvLpceXSxNy6",
+        "thumb": "/uploads/9b983b0153fbf5f7.png",
+        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
+      },
+      {
+        "id": 1788598392147,
+        "title": "MooGoo 2",
+        "cat": "Ads",
+        "catLabel": "Ads Video",
+        "dur": "0:43",
+        "role": "Editing",
+        "desc": "",
+        "driveFileId": "1VBdMF5QLOQgbWxxTdczCk49DWy86oXd7",
+        "thumb": "/uploads/2c63d865071e225e.png",
+        "hue": "linear-gradient(150deg,#0b3b2e,#065f46,#0e7c5a)"
       }
     ]
   },
@@ -274,7 +302,8 @@
       "After Effects",
       "DaVinci Resolve",
       "Color Grading",
-      "Motion Graphics"
+      "Motion Graphics",
+      "AI VIDEO"
     ],
     "statCards": [
       {
